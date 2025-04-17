@@ -1,13 +1,15 @@
-const quotes = [
-    "Believe in yourself and all that you are.",
-    "You are capable of amazing things.",
-    "Push yourself, because no one else is going to do it for you.",
-    "Dream it. Wish it. Do it.",
-    "Success doesn't just find you. You have to go out and get it."
-  ];
-  
-  function generateQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    document.getElementById('quote').innerText = quotes[randomIndex];
-  }
-  
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('generateBtn');
+  const quoteText = document.querySelector('.quote-text');
+
+  btn.addEventListener('click', async () => {
+    try {
+      // Fetch the quote from the server
+      const response = await fetch('/api/quote');
+      const data = await response.json();
+      quoteText.textContent = data.quote; // Display the quote
+    } catch (error) {
+      console.error("Error fetching quote:", error);
+    }
+  });
+});
