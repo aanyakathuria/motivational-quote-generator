@@ -1,114 +1,71 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-const quotes = ["Bloom with grace.",
-  "Chase the sun.",
-  "You are art.",
-  "Rise in silence.",
-  "Stay soft, it’s a superpower.",
-  "Dream in shades of gold.",
-  "Become who you needed.",
-  "Heal. Evolve. Bloom.",
-  "Kind heart. Fierce mind. Brave soul.",
-  "Trust the magic of new beginnings.",
-  "Be a voice, not an echo.",
-  "Progress, not perfection.",
-  "Rooting for you, always.",
-  "Create your calm.",
-  "The future is made of now.",
-  "You are your own home.",
-  "Exist loudly.",
-  "Start where you are.",
-  "Grow through what you go through.",
-  "Let your dreams breathe.",
-  "Her soul is made of wildflowers.",
-  "Like the moon, you shine in phases.",
-  "Stars can’t shine without darkness.",
-  "There’s beauty in becoming.",
-  "Not all storms come to disrupt, some come to clear the path.",
-  "She remembered who she was and the game changed.",
-  "Collect beautiful moments.",
-  "Be the energy you want to attract.",
-  "Your vibe is your power.",
-  "You’re made of stardust and stories.",
-  "Wander often, wonder always.",
-  "The light you seek is within.",
-  "Inhale confidence, exhale doubt.",
-  "Let your soul glow.",
-  "Rewrite the narrative.",
-  "She blooms quietly.",
-  "Breathe in possibility.",
-  "Leave a little sparkle.",
-  "There’s gold in your glow.",
-  "You’re the author of your own peace.",
-  "I am enough.",
-  "I am becoming who I’m meant to be.",
-  "I choose peace over pressure.",
-  "I carry light.",
-  "I grow with grace.",
-  "I am grounded and growing.",
-  "I honor my pace.",
-  "I radiate confidence.",
-  "I am aligned with my purpose.",
-  "I allow myself to begin again.",
-  "Even the moon has scars.",
-  "Flow, don’t force.",
-  "Be gentle with yourself.",
-  "Your journey is yours alone.",
-  "Flowers don’t compete, they bloom.",
-  "Soft does not mean weak.",
-  "Rest is productive.",
-  "You are not behind.",
-  "Grow slow, grow strong.",
-  "Stillness speaks volumes.",
-  "What you seek is seeking you.",
-  "Energy flows where attention goes.",
-  "Discipline is a form of self-love.",
-  "You are the sky. Everything else is just weather.",
-  "If it costs your peace, it’s too expensive.",
-  "You don’t find the light, you become it.",
-  "When nothing is certain, everything is possible.",
-  "The wound is where the light enters you.",
-  "Your only limit is your mind.",
-  "Be brave enough to be bad at something new.",
-  "Live with intention.",
-  "Stay close to what feels like sunlight.",
-  "Life isn’t a race, it’s a rhythm.",
-  "Let the quiet guide you.",
-  "What’s meant for you won’t miss you.",
-  "Some days you bloom, some days you rest. Both are growth.",
-  "Let it be messy, let it be real.",
-  "You’re not too late.",
-  "Water your roots.",
-  "Let your life be a masterpiece.",
-  "You carry galaxies in your soul.",
-  "Keep glowing.",
-  "Your story matters.",
-  "Light up the world with your spark.",
-  "Walk gently but with purpose.",
-  "Live like you’ve already made it.",
-  "You’re allowed to take up space.",
-  "Small steps still move you forward.",
-  "Honor your journey.",
-  "Your presence is a present.",
-  "Float like poetry.",
-  "Be a light in the dark.",
-  "Let your dreams whisper you awake.",
-  "You are the sunrise after the storm.",
-  "Grace looks good on you.",
-  "Let your life be art.",
-  "Your magic is magnetic.",
-  "Beauty begins the moment you believe.",
-  "Chase what sets your soul on fire.",
-  "You are the calm within the chaos." ];
+const quotes = {
+  smile: [
+    "Smile, it's your superpower!",
+    "Keep smiling, the world needs it.",
+    "Your smile is contagious.",
+    "Happiness looks great on you!",
+    "Smile big, laugh often!",
+    "A day without laughter is a day wasted.",
+    "Let your smile change the world.",
+    "Smiling resets your vibe.",
+    "Find joy in the little things.",
+    "Wear your joy like makeup."
+  ],
+  boost: [
+    "You’ve got this!",
+    "Push your limits today.",
+    "Strength grows in the moments when you think you can’t go on but you keep going anyway.",
+    "You are stronger than your doubts.",
+    "Every challenge is an opportunity to grow.",
+    "Don’t stop until you’re proud.",
+    "You’re one step closer!",
+    "Your grind will pay off.",
+    "Make your future self proud.",
+    "Be your own motivation."
+  ],
+  calm: [
+    "Inhale peace, exhale stress.",
+    "Calm is a superpower.",
+    "Let stillness guide you.",
+    "Breathe. Just breathe.",
+    "The quieter you become, the more you hear.",
+    "Peace begins with you.",
+    "Your mind deserves rest too.",
+    "You are enough, exactly as you are.",
+    "Stay soft and strong.",
+    "Let your soul breathe."
+  ],
+  encourage: [
+    "You matter.",
+    "Keep going, you're doing great.",
+    "Your light is beautiful.",
+    "The world needs your magic.",
+    "You make a difference.",
+    "Don't be afraid to shine.",
+    "You’ve come so far, don’t stop now.",
+    "Progress is still progress.",
+    "You’re worthy of everything good.",
+    "The best is yet to come."
+  ]
+};
 
+// Serve static files from 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/quote', (req, res) => {
-  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  res.json({ quote: randomQuote });
+// API route
+app.get('/api/quote/:mood', (req, res) => {
+  const mood = req.params.mood;
+  if (quotes[mood]) {
+    const randomQuote = quotes[mood][Math.floor(Math.random() * quotes[mood].length)];
+    res.json({ quote: randomQuote });
+  } else {
+    res.status(400).json({ error: "Invalid mood type" });
+  }
 });
 
 app.listen(PORT, () => {
